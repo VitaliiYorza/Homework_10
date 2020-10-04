@@ -24,30 +24,34 @@ class User:
                 'first_name']
         return dict_of_friends_user1
 
+    def __and__(self, other_user):
+        response = user1.friends(user1.id)
+        dict_of_friends_user1 = user1.friendstodict(response)
+
+        mutual_friends = {}
+
+        response = other_user.friends(other_user.id)
+        dict_of_friends_user2 = other_user.friendstodict(response)
+
+        mutual_friends_id = list(set(dict_of_friends_user1) & set(dict_of_friends_user2))
+
+        between = len(dict_of_friends_user1) > len(dict_of_friends_user2)
+        if between == True:
+            less_dict = dict_of_friends_user2
+        else:
+            less_dict = dict_of_friends_user1
+        for keys in mutual_friends_id:
+            for k, v in less_dict.items():
+                if keys == k:
+                    mutual_friends[keys] = v
+        return mutual_friends
+
+
+    def __str__(self):
+        return f'https://vk.com/id{user1.id}'
+
+
+print(user1.__and__(user2))
 user1 = User(int(input('Write id of first user')))
 user2 = User(int(input('Write id of second user')))
-response = user1.friends(user1.id)
-
-dict_of_friends_user1 = user1.friendstodict(response)
-
-mutual_friends = {}
-
-response = user2.friends(user2.id)
-dict_of_friends_user2 = user2.friendstodict(response)
-
-mutual_friends_id = list(set(dict_of_friends_user1) & set(dict_of_friends_user2))
-
-between = len(dict_of_friends_user1) > len(dict_of_friends_user2)
-if between == True:
-    less_dict = dict_of_friends_user2
-else:
-    less_dict = dict_of_friends_user1
-for keys in mutual_friends_id:
-    for k, v in less_dict.items():
-        if keys == k:
-            mutual_friends[keys] = v
-print('Your mutual friends: ',mutual_friends)
-print('Page vk is: ',user1.vkpage(user1))
-#or
-user = f'https://vk.com/id{user2.id}'
-print(user)
+print(user1)
